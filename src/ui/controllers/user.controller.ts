@@ -1,15 +1,21 @@
 import { Request, Response, Router } from 'express'
+import { createUser } from '../../infrastructure/application/service/UserService'
 
 const router = Router()
 
-router.get('/api/v1/users', async (req: Request, res: Response) => {
+router.get('/api/v1/signup', async (req: Request, res: Response) => {
     try {
         
-        
+        await createUser({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: req.body.password
+        })
 
         res.status(200).send({
             statusCode: 200,
-            message: 'users'
+            message: 'signed up'
         })
 
     } catch (error) {
