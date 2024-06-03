@@ -3,6 +3,8 @@ import * as UserService from '../../infrastructure/application/service/UserServi
 import { UserNotFoundException } from '../../infrastructure/application/exceptions/UserNotFoundException'
 import { UserPasswordMisMatch } from '../../infrastructure/application/exceptions/UserPasswordMisMatch'
 import { EntityNotFoundError } from 'typeorm'
+import * as UserAuth from '../../infrastructure/application/service/UserAuth'
+import { UserUnauthenticated } from '../../infrastructure/application/exceptions/UserUnauthenticated'
 
 const router = Router()
 
@@ -54,6 +56,21 @@ router.post('/api/v1/login', async (req: Request, res: Response) => {
                 message: 'Internal server error'
             })
         }
+    }
+})
+
+router.post('/api/v1/validate_token', UserAuth.userAuth , async (req: Request, res: Response) => {
+    try {
+
+        return res.status(200).send({
+            statusCode: 200
+        })
+    } catch (error) {
+        console.log(error)
+            res.status(500).send({
+                statusCode: 500,
+                message: 'Internal server error'
+            })
     }
 })
 

@@ -8,6 +8,6 @@ export const AppDataSource = new DataSource({
     port: 5432,
     username: 'postgres',
     password: 'kannan',
-    database: 'postgres',
+    database: 'meeting_poc',
     entities: [User, Room]
 })
