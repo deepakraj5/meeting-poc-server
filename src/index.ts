@@ -2,14 +2,17 @@ import express from 'express'
 import http from 'http'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { Server } from 'socket.io'
 import { AppDataSource } from './config/db/postgresConfig'
 
 import userRouter from './ui/controllers/user.controller'
+import chatRouter from './ui/controllers/chat.controller'
+import { SocketServer } from './infrastructure/application/sockets/SocketServer'
 
 dotenv.config()
 
 const app = express()
+
+app.use(express.json())
 
 app.use(cors({
     origin: ['http://localhost:5173'],
@@ -18,14 +21,11 @@ app.use(cors({
 
 const server = http.createServer(app)
 
-const io = new Server(server)
-
-
-io.on('connection', (socket) => {
-    console.log(`new user connected: ${socket.id}`)
-})
+const socketServer = new SocketServer()
+socketServer.connect(server)
 
 app.use(userRouter)
+app.use(chatRouter)
 
 
 const PORT = process.env.PORT || 5001

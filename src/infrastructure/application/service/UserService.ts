@@ -30,9 +30,9 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     try {
         
         const user = await getUser(email)
-        if(!user) {
-            throw new UserNotFoundException(email)
-        }
+        // if(!user) {
+        //     throw new UserNotFoundException(email)
+        // }
 
         if(!await comparePassword(password, user.password)) {
             throw new UserPasswordMisMatch()

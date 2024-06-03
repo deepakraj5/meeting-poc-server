@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { User } from "../../domain/model/User";
+import { Room } from "../../domain/model/Room";
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -8,5 +9,5 @@ export const AppDataSource = new DataSource({
     username: 'postgres',
     password: 'kannan',
     database: 'postgres',
-    entities: [User]
+    entities: [User, Room]
 })
