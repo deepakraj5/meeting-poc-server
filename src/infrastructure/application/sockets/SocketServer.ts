@@ -2,6 +2,7 @@ import { Server } from "socket.io"
 import http from 'http'
 import { Socket } from 'socket.io'
 import * as ChatSocket from './ChatSocket'
+import { validateSocketAuthentication } from "./SocketAuth"
 
 export class SocketServer {
     public socket: Socket
@@ -17,6 +18,12 @@ export class SocketServer {
         })
 
         io.on('connection', socket => {
+
+            const accessToken = socket.handshake.auth.accessToken
+            if(!validateSocketAuthentication(accessToken)) {
+                socket.disconnect(true)
+            }
+
             this.socket = socket
             console.log(`new user connected: ${socket.id}`)
             ChatSocket.onChatConnection(socket, io)
